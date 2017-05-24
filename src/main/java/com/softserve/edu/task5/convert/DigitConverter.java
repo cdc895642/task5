@@ -16,10 +16,18 @@ public class DigitConverter {
     private int minValue=0;
     private int maxValue=999999999;
 
+    /**
+     * return minimal input value
+     * @return minimal input value
+     */
     public int getMinValue() {
         return minValue;
     }
 
+    /**
+     * return maximum input value
+     * @return maximum input value
+     */
     public int getMaxValue() {
         return maxValue;
     }

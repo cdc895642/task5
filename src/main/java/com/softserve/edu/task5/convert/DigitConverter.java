@@ -113,55 +113,6 @@ public class DigitConverter {
         }
     }
 
-    /**
-     * replaced by convertNumber()
-     */
-    @Deprecated
-    private void convert() {
-        checkInputValue(inputNumber);
-        if (inputNumber == 0) {
-            outputNumber.append("ноль");
-            return;
-        }
-        Integer remainder = inputNumber;
-        int arraySize = remainder.toString().length();
-        Integer processedNumber = null;
-        int divider = 1;
-
-        for (int i = 0; i < inputNumber.toString().length(); ) {
-            Type degreeType = Type.MALE;
-            if (arraySize > 6 && arraySize < 10) {
-                divider = 1000000;
-            }
-            if (arraySize > 3 && arraySize < 7) {
-                degreeType = Type.FEMALE;
-                divider = 1000;
-            }
-
-            processedNumber = remainder / divider;
-            remainder = remainder - processedNumber * divider;
-
-            convertBeforeThousand(processedNumber, degreeType);
-            addDegree(processedNumber, divider);
-
-            arraySize = remainder.toString().length();
-            i += processedNumber.toString().length();
-            divider = 1;
-        }
-
-    }
-
-    /**
-     * replaced by addNumberDegree()
-     * @param processedNumber
-     * @param divider
-     */
-    @Deprecated
-    private void addDegree(Integer processedNumber, int divider) {
-        String degree = getDegree(processedNumber, divider);
-        outputNumber.append(degree + " ");
-    }
-
     private void addNumberDegree(Integer processedNumber, int divider) {
         String degree = getNumberDegree(processedNumber, divider);
         outputNumber.append(degree + " ");
@@ -190,46 +141,6 @@ public class DigitConverter {
         for (NumberRange numberRange:rangeList){
             if (divider==numberRange.getDivider()){
                 return numberRange.getNumberDegree(processedNumber);
-            }
-        }
-        return "";
-    }
-
-    /**
-     * replaced by getNumberDegree()
-     * @param processedNumber
-     * @param divider
-     * @return
-     */
-    @Deprecated
-    private String getDegree(Integer processedNumber, int divider) {
-        int lastIndex = processedNumber.toString().length() - 1;
-        int lastDigit = new Integer(processedNumber.toString().charAt(lastIndex) + "");
-        if (processedNumber > 10 && processedNumber < 20) {
-            lastDigit = processedNumber;
-        }
-        if (divider == 1000000) {
-            switch (lastDigit) {
-                case 1:
-                    return "миллион";
-                case 2:
-                case 3:
-                case 4:
-                    return "миллиона";
-                default:
-                    return "миллионов";
-            }
-        }
-        if (divider == 1000) {
-            switch (lastDigit) {
-                case 1:
-                    return "тысяча";
-                case 2:
-                case 3:
-                case 4:
-                    return "тысячи";
-                default:
-                    return "тысяч";
             }
         }
         return "";

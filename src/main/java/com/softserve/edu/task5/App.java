@@ -9,25 +9,28 @@ import java.text.ParseException;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args ){
+public class App {
+    private static String RULES="input integer value as an argument of the program";
+
+    public static void main(String[] args) {
+        if (args.length==0){
+            System.out.print(RULES);
+        }
         processNumber(args[0]);
     }
 
-    public static void processNumber(String input){
-        NumberFormat numberFormat=NumberFormat.getNumberInstance();
+    public static void processNumber(String input) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
         try {
-            Integer inputNumber=numberFormat.parse(input).intValue();
-            DigitConverter digitConverter=new DigitConverter(inputNumber);
-            ThousandNumberRange thousandNumberRange=ThousandNumberRange.getInstance();
-            MillionNumberRange millionNumberRange=MillionNumberRange.getInstance();
+            Integer inputNumber = numberFormat.parse(input).intValue();
+            DigitConverter digitConverter = new DigitConverter(inputNumber);
+            ThousandNumberRange thousandNumberRange = ThousandNumberRange.getInstance();
+            MillionNumberRange millionNumberRange = MillionNumberRange.getInstance();
             digitConverter.addRange(thousandNumberRange);
             digitConverter.addRange(millionNumberRange);
             digitConverter.convertNumber();
-            System.out.println(digitConverter.toString());
+            System.out.println(digitConverter);
         } catch (ParseException e) {
             e.printStackTrace();
         }

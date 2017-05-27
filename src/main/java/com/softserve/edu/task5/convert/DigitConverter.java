@@ -6,13 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * convert integer into the string representation. Base implementation can process numbers from 0 to 999
+ * convert integer into the string representation. Base implementation can
+ * process numbers from 0 to 999
  */
 public class DigitConverter {
-    private String[] firstTen = {"", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"};
-    private String[] secondTen = {"десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"};
-    private String[] tens = {"", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"};
-    private String[] hundreds = {"", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"};
+    private String[] firstTen = {"", "один", "два", "три", "четыре", "пять",
+            "шесть", "семь", "восемь", "девять"};
+    private String[] secondTen = {"десять", "одинадцать", "двенадцать",
+            "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
+            "семнадцать", "восемнадцать", "девятнадцать"};
+    private String[] tens = {"", "", "двадцать", "тридцать", "сорок",
+            "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"};
+    private String[] hundreds = {"", "сто", "двести", "триста", "четыреста",
+            "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"};
     private StringBuilder outputNumber;
     private Integer inputNumber;
     private int minValue = 0;
@@ -37,13 +43,13 @@ public class DigitConverter {
         return maxValue;
     }
 
-    public void addRange(NumberRange numberRange){
+    public void addRange(NumberRange numberRange) {
         rangeList.add(numberRange);
-        if (numberRange.getMinValue()<minValue){
-            minValue=numberRange.getMinValue();
+        if (numberRange.getMinValue() < minValue) {
+            minValue = numberRange.getMinValue();
         }
-        if (numberRange.getMaxNumIndex()>maxValue){
-            maxValue=numberRange.getMaxNumIndex();
+        if (numberRange.getMaxNumIndex() > maxValue) {
+            maxValue = numberRange.getMaxNumIndex();
         }
     }
 
@@ -69,12 +75,14 @@ public class DigitConverter {
         if (inputNumber >= minValue && inputNumber <= maxValue) {
             return;
         }
-        for (NumberRange numberRange:rangeList){
-            if (inputNumber >= numberRange.getMinValue() && inputNumber <= numberRange.getMaxValue()){
+        for (NumberRange numberRange : rangeList) {
+            if (inputNumber >= numberRange.getMinValue() && inputNumber <=
+                    numberRange.getMaxValue()) {
                 return;
             }
         }
-        throw new IllegalArgumentException(String.format("input number %s is out of range", inputNumber));
+        throw new IllegalArgumentException(String.format("input number %s is " +
+                "out of range", inputNumber));
     }
 
     /**
@@ -94,7 +102,8 @@ public class DigitConverter {
         for (int i = 0; i < inputNumber.toString().length(); ) {
             Type degreeType = Type.MALE;
             for (NumberRange numberRange : rangeList) {
-                if (arraySize >= numberRange.getMinNumIndex() && arraySize <= numberRange.getMaxNumIndex()) {
+                if (arraySize >= numberRange.getMinNumIndex() && arraySize <=
+                        numberRange.getMaxNumIndex()) {
                     divider = numberRange.getDivider();
                     degreeType = numberRange.getNumberType();
                 }
@@ -121,12 +130,14 @@ public class DigitConverter {
     private void convertBeforeThousand(Integer input, Type type) {
         char[] inputArray = input.toString().toCharArray();
         if (inputArray.length == 3) {
-            outputNumber.append(hundreds[new Integer(inputArray[0] + "")] + " ");
+            outputNumber.append(hundreds[new Integer(inputArray[0] + "")] + "" +
+                    " ");
         }
         if (inputArray.length == 2 && input >= 20) {
             outputNumber.append(tens[new Integer(inputArray[0] + "")] + " ");
         } else if (input >= 10 && input < 20) {
-            outputNumber.append(secondTen[Integer.parseInt(new String(inputArray)) - 10] + " ");
+            outputNumber.append(secondTen[Integer.parseInt(new String
+                    (inputArray)) - 10] + " ");
             return;
         }
         if (inputArray.length == 1) {
@@ -134,12 +145,13 @@ public class DigitConverter {
             outputNumber.append(unit + " ");
             return;
         }
-        convertBeforeThousand(Integer.parseInt(new String(inputArray, 1, inputArray.length - 1)), type);
+        convertBeforeThousand(Integer.parseInt(new String(inputArray, 1,
+                inputArray.length - 1)), type);
     }
 
     private String getNumberDegree(Integer processedNumber, int divider) {
-        for (NumberRange numberRange:rangeList){
-            if (divider==numberRange.getDivider()){
+        for (NumberRange numberRange : rangeList) {
+            if (divider == numberRange.getDivider()) {
                 return numberRange.getNumberDegree(processedNumber);
             }
         }

@@ -1,4 +1,9 @@
-package com.softserve.edu.task5.convert;
+package com.softserve.edu.task5.convert.range;
+
+import com.softserve.edu.task5.convert.Type;
+
+import java.math.BigInteger;
+import java.util.ResourceBundle;
 
 /**
  * base implementation of functionality for NumberRange
@@ -7,11 +12,11 @@ package com.softserve.edu.task5.convert;
 public abstract class AbstractNumberRange implements NumberRange {
     protected int maxNumIndex=0;
     protected int minNumIndex=0;
-    protected int divider=1;
+    protected BigInteger divider=BigInteger.ONE;
     protected String numberDegree=null;
-    protected  Type numberType=null;
-    protected int minValue=0;
-    protected int maxValue=0;
+    protected Type numberType=null;
+    protected BigInteger minValue=BigInteger.ZERO;
+    protected BigInteger maxValue=BigInteger.ZERO;
 
     @Override
     public int getMaxNumIndex() {
@@ -24,12 +29,12 @@ public abstract class AbstractNumberRange implements NumberRange {
     }
 
     @Override
-    public int getDivider() {
+    public BigInteger getDivider() {
         return divider;
     }
 
     @Override
-    public String getNumberDegree(Integer processedNumber) {
+    public String getNumberDegree(BigInteger processedNumber, ResourceBundle wordsStorage) {
         return numberDegree;
     }
 
@@ -39,12 +44,12 @@ public abstract class AbstractNumberRange implements NumberRange {
     }
 
     @Override
-    public int getMinValue() {
+    public BigInteger getMinValue() {
         return minValue;
     }
 
     @Override
-    public int getMaxValue() {
+    public BigInteger getMaxValue() {
         return maxValue;
     }
 }

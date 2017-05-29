@@ -1,14 +1,11 @@
 package com.softserve.edu.task5;
 
 import com.softserve.edu.task5.convert.DigitConverter;
-import com.softserve.edu.task5.convert.MillionNumberRange;
-import com.softserve.edu.task5.convert.ThousandNumberRange;
-
-import java.text.NumberFormat;
-import java.text.ParseException;
+import com.softserve.edu.task5.convert.range.MillionNumberRange;
+import com.softserve.edu.task5.convert.range.ThousandNumberRange;
 
 /**
- * Hello world!
+ * entry point
  */
 public class App {
     private static String RULES="input integer value as an argument of the program";
@@ -21,17 +18,16 @@ public class App {
     }
 
     public static void processNumber(String input) {
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
         try {
-            Integer inputNumber = numberFormat.parse(input).intValue();
-            DigitConverter digitConverter = new DigitConverter(inputNumber);
+            DigitConverter digitConverter = new DigitConverter(input);
             ThousandNumberRange thousandNumberRange = ThousandNumberRange.getInstance();
             MillionNumberRange millionNumberRange = MillionNumberRange.getInstance();
             digitConverter.addRange(thousandNumberRange);
             digitConverter.addRange(millionNumberRange);
             digitConverter.convertNumber();
             System.out.println(digitConverter);
-        } catch (ParseException e) {
+        } catch (IllegalArgumentException e) {
+            System.out.println("Please check input argument or added NumberRange :");
             e.printStackTrace();
         }
     }

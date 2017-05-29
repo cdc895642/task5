@@ -5,5 +5,5 @@ package com.softserve.edu.task5.convert;
  * represent kind of number
  */
 public enum Type {
-    MALE, FEMALE
+    MALE, FEMALE, MIDDLE, NONE
 }

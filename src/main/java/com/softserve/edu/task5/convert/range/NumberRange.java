@@ -1,4 +1,9 @@
-package com.softserve.edu.task5.convert;
+package com.softserve.edu.task5.convert.range;
+
+import com.softserve.edu.task5.convert.Type;
+
+import java.math.BigInteger;
+import java.util.ResourceBundle;
 
 /**
  * Created by cdc89 on 24.05.2017.
@@ -21,14 +26,14 @@ public interface NumberRange {
      * get divider that fit to the numbers that can be processed (1000 for thousands, 1000000 for millions etc)
      * @return divider that fit to the numbers that can be processed
      */
-    public int getDivider();
+    public BigInteger getDivider();
 
     /**
      * get String representation of divider fit to processedNumber
      * @param processedNumber
      * @return String representation of divider
      */
-    public String getNumberDegree(Integer processedNumber);
+    public String getNumberDegree(BigInteger processedNumber, ResourceBundle wordsStorage);
 
     /**
      * get kind of number string representation
@@ -40,11 +45,11 @@ public interface NumberRange {
      * get min value that can be processed
      * @return min value that can be processed
      */
-    public int getMinValue();
+    public BigInteger getMinValue();
 
     /**
      * get max value that can be processed
      * @return get max value that can be processed
      */
-    public int getMaxValue();
+    public BigInteger getMaxValue();
 }

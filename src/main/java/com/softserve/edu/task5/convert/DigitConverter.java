@@ -1,83 +1,62 @@
 package com.softserve.edu.task5.convert;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
+import com.softserve.edu.task5.convert.range.NumberRange;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * convert integer into the string representation. Base implementation can
  * process numbers from 0 to 999
  */
 public class DigitConverter {
-    private String[] firstTen = {"", "один", "два", "три", "четыре", "пять",
-            "шесть", "семь", "восемь", "девять"};
-    private String[] secondTen = {"десять", "одинадцать", "двенадцать",
-            "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
-            "семнадцать", "восемнадцать", "девятнадцать"};
-    private String[] tens = {"", "", "двадцать", "тридцать", "сорок",
-            "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"};
-    private String[] hundreds = {"", "сто", "двести", "триста", "четыреста",
-            "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"};
+    private Locale locale;
+    private ResourceBundle wordsStorage;
+    private String[] firstTen;
+    private String[] secondTen;
+    private String[] tens;
+    private String[] hundreds;
     private StringBuilder outputNumber;
-    private Integer inputNumber;
-    private int minValue = 0;
-    private int maxValue = 999;
+    private BigInteger inputNumber;
+    private BigInteger minValue = BigInteger.ZERO;
+    private BigInteger maxValue = BigInteger.valueOf(999);
     private List<NumberRange> rangeList;
-
-    /**
-     * return minimal input value
-     *
-     * @return minimal input value
-     */
-    public int getMinValue() {
-        return minValue;
-    }
-
-    /**
-     * return maximum input value
-     *
-     * @return maximum input value
-     */
-    public int getMaxValue() {
-        return maxValue;
-    }
-
-    public void addRange(NumberRange numberRange) {
-        rangeList.add(numberRange);
-        if (numberRange.getMinValue() < minValue) {
-            minValue = numberRange.getMinValue();
-        }
-        if (numberRange.getMaxNumIndex() > maxValue) {
-            maxValue = numberRange.getMaxNumIndex();
-        }
-    }
-
-    public DigitConverter(Integer inputNumber) {
-        this();
-        this.inputNumber = inputNumber;
-        //convert();
-    }
 
     private DigitConverter() {
         rangeList = new ArrayList<>();
         outputNumber = new StringBuilder();
     }
 
-    public DigitConverter(String inputString) throws ParseException {
+    public DigitConverter(String inputString, Locale locale){
         this();
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        inputNumber = numberFormat.parse(inputString).intValue();
-        //convert();
+        this.locale=locale;
+        wordsStorage=ResourceBundle.getBundle("WordsStorage", locale);
+        firstTen=wordsStorage.getString("FirstTen").split(",");
+        secondTen=wordsStorage.getString("SecondTen").split(",");
+        tens=wordsStorage.getString("Tens").split(",");
+        hundreds=wordsStorage.getString("Hundreds").split(",");
+        inputNumber = new BigInteger(inputString);
     }
 
-    private void checkInputValue(int inputNumber) {
-        if (inputNumber >= minValue && inputNumber <= maxValue) {
+    public DigitConverter(String inputString) {
+        this(inputString,new Locale("ru", "RU"));
+    }
+
+    public void addRange(NumberRange numberRange) {
+        rangeList.add(numberRange);
+    }
+
+    private void checkInputValue(BigInteger inputNumber) {
+        if (inputNumber.compareTo(minValue) >= 0 && inputNumber.compareTo(maxValue) <= 0) {
             return;
         }
         for (NumberRange numberRange : rangeList) {
-            if (inputNumber >= numberRange.getMinValue() && inputNumber <=
-                    numberRange.getMaxValue()) {
+            if (inputNumber.compareTo(numberRange.getMinValue()) >= 0 && inputNumber.compareTo
+                    (numberRange.getMaxValue()) <=
+                    0) {
                 return;
             }
         }
@@ -90,17 +69,17 @@ public class DigitConverter {
      */
     public void convertNumber() {
         checkInputValue(inputNumber);
-        if (inputNumber == 0) {
+        if (inputNumber.compareTo(BigInteger.ZERO) == 0) {
             outputNumber.append("ноль");
             return;
         }
-        Integer remainder = inputNumber;
+        BigInteger remainder = inputNumber;
         int arraySize = remainder.toString().length();
-        Integer processedNumber = null;
-        int divider = 1;
+        BigInteger processingNumber;
+        BigInteger divider = BigInteger.ONE;
 
         for (int i = 0; i < inputNumber.toString().length(); ) {
-            Type degreeType = Type.MALE;
+            Type degreeType = Type.NONE;
             for (NumberRange numberRange : rangeList) {
                 if (arraySize >= numberRange.getMinNumIndex() && arraySize <=
                         numberRange.getMaxNumIndex()) {
@@ -109,21 +88,21 @@ public class DigitConverter {
                 }
             }
 
-            processedNumber = remainder / divider;
-            checkInputValue(processedNumber);
-            remainder = remainder - processedNumber * divider;
+            processingNumber = remainder.divide(divider);
+            checkInputValue(processingNumber);
+            remainder = remainder.subtract(processingNumber.multiply(divider));
 
-            convertBeforeThousand(processedNumber, degreeType);
-            addNumberDegree(processedNumber, divider);
+            convertBeforeThousand(processingNumber.intValue(), degreeType);
+            addNumberDegree(processingNumber, divider);
 
             arraySize = remainder.toString().length();
-            i += processedNumber.toString().length();
-            divider = 1;
+            i += processingNumber.toString().length();
+            divider = BigInteger.ONE;
         }
     }
 
-    private void addNumberDegree(Integer processedNumber, int divider) {
-        String degree = getNumberDegree(processedNumber, divider);
+    private void addNumberDegree(BigInteger processingNumber, BigInteger divider) {
+        String degree = getNumberDegree(processingNumber, divider);
         outputNumber.append(degree + " ");
     }
 
@@ -149,25 +128,32 @@ public class DigitConverter {
                 inputArray.length - 1)), type);
     }
 
-    private String getNumberDegree(Integer processedNumber, int divider) {
+    private String getNumberDegree(BigInteger processingNumber, BigInteger divider) {
         for (NumberRange numberRange : rangeList) {
-            if (divider == numberRange.getDivider()) {
-                return numberRange.getNumberDegree(processedNumber);
+            if (divider.compareTo(numberRange.getDivider()) == 0) {
+                return numberRange.getNumberDegree(processingNumber,wordsStorage);
             }
         }
         return "";
     }
 
-    private String getUnits(int digit, Type type) {
+    /**
+     * can be overridden if string representation of number depends on gender and the number of
+     * units
+     * @param digit number of units
+     * @param type gender of words
+     * @return string representation of units (1-9)
+     */
+    protected String getUnits(int digit, Type type) {
         switch (digit) {
             case 1:
                 if (type == Type.FEMALE) {
-                    return "одна";
+                    return wordsStorage.getString("FemaleOne");//одна
                 }
                 break;
             case 2:
                 if (type == Type.FEMALE) {
-                    return "две";
+                    return wordsStorage.getString("FemaleTwo");//две
                 }
                 break;
         }

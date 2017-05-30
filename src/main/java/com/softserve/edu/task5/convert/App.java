@@ -1,8 +1,8 @@
-package com.softserve.edu.task5;
+package com.softserve.edu.task5.convert;
 
-import com.softserve.edu.task5.convert.DigitConverter;
-import com.softserve.edu.task5.convert.range.MillionNumberRange;
-import com.softserve.edu.task5.convert.range.ThousandNumberRange;
+import com.softserve.edu.task5.convert.convert.DigitConverter;
+import com.softserve.edu.task5.convert.convert.range.MillionNumberRange;
+import com.softserve.edu.task5.convert.convert.range.ThousandNumberRange;
 
 /**
  * entry point

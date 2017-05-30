@@ -1,6 +1,6 @@
-package com.softserve.edu.task5.convert.range;
+package com.softserve.edu.task5.convert.convert.range;
 
-import com.softserve.edu.task5.convert.Type;
+import com.softserve.edu.task5.convert.convert.Type;
 
 import java.math.BigInteger;
 import java.util.ResourceBundle;

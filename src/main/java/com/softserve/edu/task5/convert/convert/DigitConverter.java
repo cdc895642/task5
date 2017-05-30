@@ -1,6 +1,6 @@
-package com.softserve.edu.task5.convert;
+package com.softserve.edu.task5.convert.convert;
 
-import com.softserve.edu.task5.convert.range.NumberRange;
+import com.softserve.edu.task5.convert.convert.range.NumberRange;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -24,25 +24,33 @@ public class DigitConverter {
     private BigInteger minValue = BigInteger.ZERO;
     private BigInteger maxValue = BigInteger.valueOf(999);
     private List<NumberRange> rangeList;
+    private String inputString;
 
     private DigitConverter() {
         rangeList = new ArrayList<>();
         outputNumber = new StringBuilder();
     }
 
-    public DigitConverter(String inputString, Locale locale){
+    public DigitConverter(String inputString, Locale locale) {
         this();
-        this.locale=locale;
-        wordsStorage=ResourceBundle.getBundle("WordsStorage", locale);
-        firstTen=wordsStorage.getString("FirstTen").split(",");
-        secondTen=wordsStorage.getString("SecondTen").split(",");
-        tens=wordsStorage.getString("Tens").split(",");
-        hundreds=wordsStorage.getString("Hundreds").split(",");
+        this.locale = locale;
+        wordsStorage = ResourceBundle.getBundle("WordsStorage", locale);
+        firstTen = wordsStorage.getString("FirstTen").split(",");
+        secondTen = wordsStorage.getString("SecondTen").split(",");
+        tens = wordsStorage.getString("Tens").split(",");
+        hundreds = wordsStorage.getString("Hundreds").split(",");
+        this.inputString = inputString;
+        inputString = removeMinus(inputString);
         inputNumber = new BigInteger(inputString);
     }
 
     public DigitConverter(String inputString) {
-        this(inputString,new Locale("ru", "RU"));
+        this(inputString, new Locale("ru", "RU"));
+    }
+
+    private String removeMinus(String inputString) {
+        inputString = inputString.startsWith("-") ? inputString.replaceFirst("-", "") : inputString;
+        return inputString;
     }
 
     public void addRange(NumberRange numberRange) {
@@ -131,7 +139,7 @@ public class DigitConverter {
     private String getNumberDegree(BigInteger processingNumber, BigInteger divider) {
         for (NumberRange numberRange : rangeList) {
             if (divider.compareTo(numberRange.getDivider()) == 0) {
-                return numberRange.getNumberDegree(processingNumber,wordsStorage);
+                return numberRange.getNumberDegree(processingNumber, wordsStorage);
             }
         }
         return "";
@@ -140,8 +148,9 @@ public class DigitConverter {
     /**
      * can be overridden if string representation of number depends on gender and the number of
      * units
+     *
      * @param digit number of units
-     * @param type gender of words
+     * @param type  gender of words
      * @return string representation of units (1-9)
      */
     protected String getUnits(int digit, Type type) {
@@ -162,6 +171,13 @@ public class DigitConverter {
 
     @Override
     public String toString() {
-        return outputNumber.toString();
+        String result = isInputHaveMinus() ?
+                wordsStorage.getString("Minus") +" " + outputNumber.toString() :
+                outputNumber.toString();
+        return result.trim();
+    }
+
+    private boolean isInputHaveMinus() {
+        return inputString.startsWith("-");
     }
 }

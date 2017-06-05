@@ -1,6 +1,6 @@
-package com.softserve.edu.task5.convert.convert.range;
+package com.softserve.edu.task5.convert.range;
 
-import com.softserve.edu.task5.convert.convert.Type;
+import com.softserve.edu.task5.convert.Type;
 
 import java.math.BigInteger;
 import java.util.ResourceBundle;
@@ -12,17 +12,6 @@ import java.util.ResourceBundle;
 public class MillionNumberRange extends AbstractNumberRange {
     private static MillionNumberRange instance = null;
 
-    /**
-     * singleton
-     * @return object of this class
-     */
-    public static MillionNumberRange getInstance() {
-        if (instance == null) {
-            instance = new MillionNumberRange();
-        }
-        return instance;
-    }
-
     private MillionNumberRange() {
         maxNumIndex = 9;
         minNumIndex = 7;
@@ -32,11 +21,26 @@ public class MillionNumberRange extends AbstractNumberRange {
         maxValue = BigInteger.valueOf(999999999);
     }
 
+    /**
+     * singleton
+     *
+     * @return object of this class
+     */
+    public static MillionNumberRange getInstance() {
+        if (instance == null) {
+            instance = new MillionNumberRange();
+        }
+        return instance;
+    }
+
     @Override
-    public String getNumberDegree(BigInteger processingNumber, ResourceBundle wordsStorage) {
+    public String getNumberDegree(BigInteger processingNumber, ResourceBundle
+            wordsStorage) {
         int lastIndex = processingNumber.toString().length() - 1;
-        int lastDigit = new Integer(processingNumber.toString().charAt(lastIndex) + "");
-        if (processingNumber.intValue() > 10 && processingNumber.intValue() < 20) {
+        int lastDigit = new Integer(processingNumber.toString().charAt
+                (lastIndex) + "");
+        if (processingNumber.intValue() > 10 && processingNumber.intValue() <
+                20) {
             lastDigit = processingNumber.intValue();
         }
         switch (lastDigit) {

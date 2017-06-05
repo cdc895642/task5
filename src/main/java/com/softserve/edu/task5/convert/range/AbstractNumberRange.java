@@ -1,6 +1,6 @@
-package com.softserve.edu.task5.convert.convert.range;
+package com.softserve.edu.task5.convert.range;
 
-import com.softserve.edu.task5.convert.convert.Type;
+import com.softserve.edu.task5.convert.Type;
 
 import java.math.BigInteger;
 import java.util.ResourceBundle;
@@ -10,13 +10,13 @@ import java.util.ResourceBundle;
  * Created by cdc89 on 24.05.2017.
  */
 public abstract class AbstractNumberRange implements NumberRange {
-    protected int maxNumIndex=0;
-    protected int minNumIndex=0;
-    protected BigInteger divider=BigInteger.ONE;
-    protected String numberDegree=null;
-    protected Type numberType=null;
-    protected BigInteger minValue=BigInteger.ZERO;
-    protected BigInteger maxValue=BigInteger.ZERO;
+    protected int maxNumIndex = 0;
+    protected int minNumIndex = 0;
+    protected BigInteger divider = BigInteger.ONE;
+    protected String numberDegree = null;
+    protected Type numberType = null;
+    protected BigInteger minValue = BigInteger.ZERO;
+    protected BigInteger maxValue = BigInteger.ZERO;
 
     @Override
     public int getMaxNumIndex() {
@@ -34,7 +34,8 @@ public abstract class AbstractNumberRange implements NumberRange {
     }
 
     @Override
-    public String getNumberDegree(BigInteger processedNumber, ResourceBundle wordsStorage) {
+    public String getNumberDegree(BigInteger processedNumber, ResourceBundle
+            wordsStorage) {
         return numberDegree;
     }
 

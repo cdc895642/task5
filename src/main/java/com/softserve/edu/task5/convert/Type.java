@@ -1,4 +1,4 @@
-package com.softserve.edu.task5.convert.convert;
+package com.softserve.edu.task5.convert;
 
 /**
  * Created by cdc89 on 24.05.2017.

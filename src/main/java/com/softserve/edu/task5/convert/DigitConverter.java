@@ -1,6 +1,6 @@
-package com.softserve.edu.task5.convert.convert;
+package com.softserve.edu.task5.convert;
 
-import com.softserve.edu.task5.convert.convert.range.NumberRange;
+import com.softserve.edu.task5.convert.range.NumberRange;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -49,7 +49,8 @@ public class DigitConverter {
     }
 
     private String removeMinus(String inputString) {
-        inputString = inputString.startsWith("-") ? inputString.replaceFirst("-", "") : inputString;
+        inputString = inputString.startsWith("-") ? inputString.replaceFirst
+                ("-", "") : inputString;
         return inputString;
     }
 
@@ -58,11 +59,13 @@ public class DigitConverter {
     }
 
     private void checkInputValue(BigInteger inputNumber) {
-        if (inputNumber.compareTo(minValue) >= 0 && inputNumber.compareTo(maxValue) <= 0) {
+        if (inputNumber.compareTo(minValue) >= 0 && inputNumber.compareTo
+                (maxValue) <= 0) {
             return;
         }
         for (NumberRange numberRange : rangeList) {
-            if (inputNumber.compareTo(numberRange.getMinValue()) >= 0 && inputNumber.compareTo
+            if (inputNumber.compareTo(numberRange.getMinValue()) >= 0 &&
+                    inputNumber.compareTo
                     (numberRange.getMaxValue()) <=
                     0) {
                 return;
@@ -109,7 +112,8 @@ public class DigitConverter {
         }
     }
 
-    private void addNumberDegree(BigInteger processingNumber, BigInteger divider) {
+    private void addNumberDegree(BigInteger processingNumber, BigInteger
+            divider) {
         String degree = getNumberDegree(processingNumber, divider);
         outputNumber.append(degree + " ");
     }
@@ -136,17 +140,20 @@ public class DigitConverter {
                 inputArray.length - 1)), type);
     }
 
-    private String getNumberDegree(BigInteger processingNumber, BigInteger divider) {
+    private String getNumberDegree(BigInteger processingNumber, BigInteger
+            divider) {
         for (NumberRange numberRange : rangeList) {
             if (divider.compareTo(numberRange.getDivider()) == 0) {
-                return numberRange.getNumberDegree(processingNumber, wordsStorage);
+                return numberRange.getNumberDegree(processingNumber,
+                        wordsStorage);
             }
         }
         return "";
     }
 
     /**
-     * can be overridden if string representation of number depends on gender and the number of
+     * can be overridden if string representation of number depends on gender
+     * and the number of
      * units
      *
      * @param digit number of units
@@ -172,7 +179,8 @@ public class DigitConverter {
     @Override
     public String toString() {
         String result = isInputHaveMinus() ?
-                wordsStorage.getString("Minus") +" " + outputNumber.toString() :
+                wordsStorage.getString("Minus") + " " + outputNumber.toString
+                        () :
                 outputNumber.toString();
         return result.trim();
     }
